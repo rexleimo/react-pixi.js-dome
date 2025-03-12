@@ -1,5 +1,9 @@
 import * as PIXI from "pixi.js";
 import {PixiRenderEnable} from "@/packages/pixi-canvas/types/PixiRenderable";
+import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
+import GridSystem from "@/packages/pixi-canvas/GridSystem";
+import {IGridSystem} from "@/packages/pixi-canvas/types/IGridSystem";
+
 
 class World {
 
@@ -8,14 +12,20 @@ class World {
     _isDragging: boolean = false;
     _currentScale = 0.5;
     _lastPosition = {x: 0, y: 0};
+    _app: PIXI.Application<PIXI.ICanvas>
+    _gridSystem: IGridSystem;
 
     MIN_SCALE = 0.1;
-    MAX_SCALE = 50;
+    MAX_SCALE = 80;
 
-    constructor(private _app: PIXI.Application<PIXI.ICanvas>) {
+    constructor(private _application: IPolloCanvas) {
         this._instance = new PIXI.Container();
         this._instance.scale.set(this._currentScale);
+        this._app = this._application.getPixiInstances();
+        this._gridSystem = new GridSystem(this._application);
         this._app.stage.addChild(this._instance);
+        this._app.stage.addChild(this._gridSystem.getInstance());
+
         window.addEventListener('mousedown', (e) => {
             this._isDragging = true;
             this._lastPosition = {x: e.clientX, y: e.clientY};
@@ -60,6 +70,12 @@ class World {
             if (newScale !== this._currentScale) {
                 // const scaleDiff = newScale / this._currentScale;
                 this._currentScale = newScale;
+                console.log(this._currentScale);
+                if (this._currentScale > 40) {
+                    this._gridSystem.showGrid();
+                } else {
+                    this._gridSystem.hideGrid();
+                }
 
                 this._instance.scale.set(this._currentScale);
 
