@@ -11,7 +11,7 @@ enum SelectObjectManageEvent {
 class SelectObjectManage {
 
     static instance: SelectObjectManage;
-    private selectedObjects: PixiRenderEnable[] = [];
+    private selectedObjects: Set<PixiRenderEnable> = new Set();
     private selectEvents = createNanoEvents();
     private _application!: IPolloCanvas;
 
@@ -31,7 +31,9 @@ class SelectObjectManage {
 
     setSelectObject(obj: PixiRenderEnable | PixiRenderEnable[]) {
         const addObjects = this.beforeAddObject(obj);
-        this.selectedObjects.push(...addObjects);
+        addObjects.forEach(item => {
+            this.selectedObjects.add(item);
+        })
     }
 
     beforeAddObject(obj: PixiRenderEnable | PixiRenderEnable[]) {
@@ -51,9 +53,12 @@ class SelectObjectManage {
     }
 
     emitSelectEvent = debounce(() => {
-        debugger;
         this.selectEvents.emit("draw", this.selectedObjects);
     }, 50)
+
+    emitPushEvent(obj: PixiRenderEnable | PixiRenderEnable[]) {
+        this.selectEvents.emit(SelectObjectManageEvent.push, obj);
+    }
 }
 
 export default SelectObjectManage;

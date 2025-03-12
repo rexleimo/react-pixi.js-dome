@@ -103,7 +103,7 @@ class Page implements IPage {
             sprite.width = Math.min(this._width, texture.width);
             sprite.interactive = true;
             sprite.on('pointerdown', (e) => {
-                SelectObjectManage.getInstance().setSelectObject(e.currentTarget as PixiRenderEnable);
+                SelectObjectManage.getInstance().emitPushEvent(e.currentTarget as PixiRenderEnable);
             });
             this._instances.addChild(sprite);
         })

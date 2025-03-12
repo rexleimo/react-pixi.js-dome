@@ -26,6 +26,9 @@ class World {
         this._app.stage.addChild(this._instance);
         this._app.stage.addChild(this._gridSystem.getInstance());
 
+    }
+
+    init() {
         window.addEventListener('mousedown', (e) => {
             this._isDragging = true;
             this._lastPosition = {x: e.clientX, y: e.clientY};

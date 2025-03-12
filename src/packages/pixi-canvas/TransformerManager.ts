@@ -8,7 +8,20 @@ class TransformerManager {
 
     constructor(private _application: IPolloCanvas) {
         SelectObjectManage.getInstance().onSelectObject((objs) => {
-            console.log(objs);
+
+            const app = this._application.getPixiInstances();
+
+            app.stage.addChild(new Transformer({
+                rotateEnabled: true,
+                boxRotationEnabled: true,
+                group: Array.from(objs),
+                stage: app.stage,
+                wireframeStyle: {
+                    thickness: 1,
+                    color: 0xff0000,
+                }
+            }))
+
         })
     }
 
