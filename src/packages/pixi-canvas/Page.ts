@@ -3,6 +3,7 @@ import cuid from "cuid";
 import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
 import {IPage} from "@/packages/pixi-canvas/types/IPage";
 import {PixiRenderEnable} from "@/packages/pixi-canvas/types/PixiRenderable";
+import SelectObjectManage from "@/packages/pixi-canvas/SelectObjectManage";
 
 interface PageOptions {
     width?: number;
@@ -100,6 +101,10 @@ class Page implements IPage {
             const texture = PIXI.Texture.fromBuffer(imageData.data, imageData.width, imageData.height);
             const sprite = new PIXI.Sprite(texture);
             sprite.width = Math.min(this._width, texture.width);
+            sprite.interactive = true;
+            sprite.on('pointerdown', (e) => {
+                SelectObjectManage.getInstance().setSelectObject(e.currentTarget as PixiRenderEnable);
+            });
             this._instances.addChild(sprite);
         })
 

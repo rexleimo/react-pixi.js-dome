@@ -3,6 +3,8 @@ import Page from "@/packages/pixi-canvas/Page";
 import World from "@/packages/pixi-canvas/World";
 import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
 import {IGridSystem} from "@/packages/pixi-canvas/types/IGridSystem";
+import SelectObjectManage from "@/packages/pixi-canvas/SelectObjectManage";
+import TransformerManager from "@/packages/pixi-canvas/TransformerManager";
 
 
 class PolloCanvas implements IPolloCanvas {
@@ -23,6 +25,8 @@ class PolloCanvas implements IPolloCanvas {
         });
         this.init().then(() => {
             this._camera = new World(this);
+            SelectObjectManage.getInstance().setApplication(this);
+            new TransformerManager(this);
         })
     }
 

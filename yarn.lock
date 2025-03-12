@@ -419,6 +419,41 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pixi-essentials/bounds@npm:~3.0.0":
+  version: 3.0.0
+  resolution: "@pixi-essentials/bounds@npm:3.0.0"
+  peerDependencies:
+    "@pixi/math": ^7.0.0
+  checksum: 10c0/50ef2fbeeff1b08f72bb0295da0cdb82ce9f2d0045e3fd9157e3f4718e575c11231537434a1a5d285b7c710370ba7d144b7d3d903a3c64e3c7300602b4d01e51
+  languageName: node
+  linkType: hard
+
+"@pixi-essentials/object-pool@npm:~1.0.1":
+  version: 1.0.1
+  resolution: "@pixi-essentials/object-pool@npm:1.0.1"
+  peerDependencies:
+    "@pixi/settings": ^7.0.0
+    "@pixi/ticker": ^7.0.0
+  checksum: 10c0/9ca6f37b5b6867dec57862e9671cc80d171f08cf6f0aea0213c27eb99144e4c4a02d6caa2e509f873a6ca11798a48c1b13272cd65b3a718078b0dbaf8f614954
+  languageName: node
+  linkType: hard
+
+"@pixi-essentials/transformer@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@pixi-essentials/transformer@npm:3.0.4"
+  dependencies:
+    "@pixi-essentials/bounds": "npm:~3.0.0"
+    "@pixi-essentials/object-pool": "npm:~1.0.1"
+  peerDependencies:
+    "@pixi/core": ^7.0.0
+    "@pixi/display": ^7.0.0
+    "@pixi/events": ^7.0.0
+    "@pixi/graphics": ^7.0.0
+    "@pixi/math": ^7.0.0
+  checksum: 10c0/2493fbf05c027f0904552d0a64912a5b224268dad1c7ed0c7065c7a89bf2a540e6b70e4be9843aff63c6d896523d2b83db9478423936bda2af0735c67d05cb2b
+  languageName: node
+  linkType: hard
+
 "@pixi/accessibility@npm:7.4.3":
   version: 7.4.3
   resolution: "@pixi/accessibility@npm:7.4.3"
@@ -3032,6 +3067,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoevents@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "nanoevents@npm:9.1.0"
+  checksum: 10c0/5fb48e6fc1d3102daddaeffd6eada907c25b1c8554dcc648e9cb0a72979a1ab3ee56ffa2d2b3e566a8e561a9e2992a3783493c61cfaaa096b2986d56dbbc1ca5
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:^3.3.6, nanoid@npm:^3.3.8":
   version: 3.3.8
   resolution: "nanoid@npm:3.3.8"
@@ -3289,6 +3331,7 @@ __metadata:
   resolution: "pixi-react@workspace:."
   dependencies:
     "@eslint/eslintrc": "npm:^3"
+    "@pixi-essentials/transformer": "npm:^3.0.4"
     "@tailwindcss/postcss": "npm:^4"
     "@types/lodash-es": "npm:^4"
     "@types/node": "npm:^20"
@@ -3298,6 +3341,7 @@ __metadata:
     eslint: "npm:^9"
     eslint-config-next: "npm:15.2.1"
     lodash-es: "npm:^4.17.21"
+    nanoevents: "npm:^9.1.0"
     next: "npm:15.2.1"
     pixi.js: "npm:7"
     react: "npm:^19.0.0"
