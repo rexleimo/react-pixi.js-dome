@@ -3,6 +3,7 @@ import {PixiRenderEnable} from "@/packages/pixi-canvas/types/PixiRenderable";
 import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
 import GridSystem from "@/packages/pixi-canvas/GridSystem";
 import {IGridSystem} from "@/packages/pixi-canvas/types/IGridSystem";
+import KeyboardManager from "@/packages/pixi-canvas/manages/KeyboardManager";
 
 
 class World {
@@ -14,6 +15,7 @@ class World {
     _lastPosition = {x: 0, y: 0};
     _app: PIXI.Application<PIXI.ICanvas>
     _gridSystem: IGridSystem;
+    _keyboardManager: KeyboardManager;
 
     MIN_SCALE = 0.1;
     MAX_SCALE = 80;
@@ -25,7 +27,7 @@ class World {
         this._gridSystem = new GridSystem(this._application);
         this._app.stage.addChild(this._instance);
         this._app.stage.addChild(this._gridSystem.getInstance());
-
+        this._keyboardManager = KeyboardManager.getInstance();
     }
 
     init() {

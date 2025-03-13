@@ -3,7 +3,8 @@ import cuid from "cuid";
 import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
 import {IPage} from "@/packages/pixi-canvas/types/IPage";
 import {PixiRenderEnable} from "@/packages/pixi-canvas/types/PixiRenderable";
-import SelectObjectManage from "@/packages/pixi-canvas/SelectObjectManage";
+
+import ImageEntity from "@/packages/pixi-canvas/objects/Image";
 
 interface PageOptions {
     width?: number;
@@ -61,52 +62,12 @@ class Page implements IPage {
         this._instances.addChild(children);
     }
 
-    urlToImageData(url: string): Promise<ImageData> {
-        return new Promise(async (resolve, reject) => {
-
-            try {
-                const response = await fetch(url);
-                const blob = await response.blob();
-                const bitmap = await createImageBitmap(blob);
-
-
-                if (typeof OffscreenCanvas !== 'undefined') {
-                    const offscreen = new OffscreenCanvas(bitmap.width, bitmap.height);
-                    const ctx = offscreen.getContext('2d');
-                    if (ctx) {
-                        ctx.drawImage(bitmap, 0, 0);
-                        const imageData = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
-                        resolve(imageData);
-                    }
-                } else {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = bitmap.width;
-                    canvas.height = bitmap.height;
-                    const context = canvas.getContext('2d');
-                    if (context) {
-                        context.drawImage(bitmap, 0, 0);
-                        const imageData = context.getImageData(0, 0, bitmap.width, bitmap.height);
-                        resolve(imageData);
-                    }
-                }
-            } catch (e) {
-                reject(e);
-            }
-
-        })
-    }
 
     addImage(url: string) {
-        this.urlToImageData(url).then((imageData) => {
-            const texture = PIXI.Texture.fromBuffer(imageData.data, imageData.width, imageData.height);
-            const sprite = new PIXI.Sprite(texture);
-            sprite.width = Math.min(this._width, texture.width);
-            sprite.interactive = true;
-            sprite.on('pointerdown', (e) => {
-                SelectObjectManage.getInstance().emitPushEvent(e.currentTarget as PixiRenderEnable);
-            });
-            this._instances.addChild(sprite);
-        })
+
+        const image = new ImageEntity(this._app)
+        image.setImage(url);
+        this._app.addChildren(image);
 
     }
 

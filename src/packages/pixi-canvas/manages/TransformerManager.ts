@@ -1,6 +1,6 @@
 import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
 import {Transformer} from '@pixi-essentials/transformer';
-import SelectObjectManage from "@/packages/pixi-canvas/SelectObjectManage";
+import SelectObjectManage from "@/packages/pixi-canvas/manages/SelectObjectManage";
 
 class TransformerManager {
 

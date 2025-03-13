@@ -3,8 +3,11 @@ import Page from "@/packages/pixi-canvas/Page";
 import World from "@/packages/pixi-canvas/World";
 import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
 import {IGridSystem} from "@/packages/pixi-canvas/types/IGridSystem";
-import SelectObjectManage from "@/packages/pixi-canvas/SelectObjectManage";
-import TransformerManager from "@/packages/pixi-canvas/TransformerManager";
+import SelectObjectManage from "@/packages/pixi-canvas/manages/SelectObjectManage";
+import TransformerManager from "@/packages/pixi-canvas/manages/TransformerManager";
+import {PixiRenderEnable} from "@/packages/pixi-canvas/types/PixiRenderable";
+import {IEntity} from "@/packages/pixi-canvas/types/IEntity";
+import KeyboardManager from "@/packages/pixi-canvas/manages/KeyboardManager";
 
 
 class PolloCanvas implements IPolloCanvas {
@@ -23,10 +26,12 @@ class PolloCanvas implements IPolloCanvas {
             resolution: window.devicePixelRatio || 1,
             antialias: true // 关闭抗锯齿以便在高缩放时看到清晰的像素
         });
+        this._app.stage.eventMode = 'static';
         this.init().then(() => {
             this._camera = new World(this);
             SelectObjectManage.getInstance().setApplication(this);
             new TransformerManager(this);
+            KeyboardManager.getInstance();
         })
     }
 
@@ -52,6 +57,10 @@ class PolloCanvas implements IPolloCanvas {
 
     getCamera() {
         return this._camera;
+    }
+
+    addChildren(entity: IEntity) {
+        this._app.stage.addChild(entity.getEntity())
     }
 
 }
