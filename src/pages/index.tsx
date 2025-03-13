@@ -1,6 +1,6 @@
 import {useEffect, useRef} from "react";
 import {PolloCanvas} from "@/packages/pixi-canvas";
-
+import Text from "@/packages/pixi-canvas/objects/Text";
 export default function Home() {
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -20,6 +20,14 @@ export default function Home() {
                     appRef.current?._pages?.forEach((page) => {
                         page?.addImage("/1.jpg");
                     })
+
+                    const text = new Text(appRef.current!);
+                    text.setText("Hello World");
+                    text.setPosition(100, 100);
+
+                    appRef.current?.addChildren(text);
+
+
                 }, 10)
             }, 1000)
         }

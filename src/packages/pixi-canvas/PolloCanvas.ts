@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js';
 import Page from "@/packages/pixi-canvas/Page";
 import World from "@/packages/pixi-canvas/World";
-import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
-import {IGridSystem} from "@/packages/pixi-canvas/types/IGridSystem";
+import { IPolloCanvas } from "@/packages/pixi-canvas/types/IPolloCanvas";
+import { IGridSystem } from "@/packages/pixi-canvas/types/IGridSystem";
 import SelectObjectManage from "@/packages/pixi-canvas/manages/SelectObjectManage";
 import TransformerManager from "@/packages/pixi-canvas/manages/TransformerManager";
-import {IEntity} from "@/packages/pixi-canvas/types/IEntity";
+import { IEntity } from "@/packages/pixi-canvas/types/IEntity";
 import KeyboardManager from "@/packages/pixi-canvas/manages/KeyboardManager";
 import PaintingModeManager, { PaintingMode } from './manages/PaintingModeManager';
 
@@ -30,7 +30,8 @@ class PolloCanvas implements IPolloCanvas {
         this.init().then(() => {
             this._camera = new World(this);
             SelectObjectManage.getInstance().setApplication(this);
-            new TransformerManager(this);
+            TransformerManager.getInstance().setApplication(this);
+            TransformerManager.getInstance().init();
             KeyboardManager.getInstance();
             PaintingModeManager.getInstance().setMode(PaintingMode.DRAW);
         })
@@ -51,9 +52,9 @@ class PolloCanvas implements IPolloCanvas {
     }
 
     getRendererTargetSize() {
-        const {width, height} = this._app.renderer;
+        const { width, height } = this._app.renderer;
         const scale = this.getCamera().getScale();
-        return {width: width / scale, height: height / scale};
+        return { width: width / scale, height: height / scale };
     }
 
     getCamera() {
@@ -63,7 +64,7 @@ class PolloCanvas implements IPolloCanvas {
     addChildren(entity: IEntity) {
         this.getCamera().addChildren(entity.getEntity())
     }
-    
+
     setPaintingMode(mode: PaintingMode) {
         PaintingModeManager.getInstance().setMode(mode);
     }

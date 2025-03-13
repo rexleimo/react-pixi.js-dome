@@ -13,7 +13,7 @@ class World implements IEntity {
     _instance: PIXI.Container;
     // 定义可以移动的属性
     _isDragging: boolean = false;
-    _currentScale = 0.5;
+    _currentScale = 1;
     _lastPosition = { x: 0, y: 0 };
     _app: PIXI.Application<PIXI.ICanvas>
     _gridSystem: IGridSystem;

@@ -4,6 +4,8 @@ import SelectObjectManage from "@/packages/pixi-canvas/manages/SelectObjectManag
 import KeyboardManager, { KeyMap } from "./KeyboardManager";
 import { Point } from "pixi.js";
 import { Matrix } from "@pixi/math";
+import * as PIXI from 'pixi.js';
+
 
 
 class Transformer extends PixiTransformer {
@@ -29,7 +31,7 @@ class Transformer extends PixiTransformer {
         // @ts-ignore
         this._transformHandle = null;
         this._transformType = 'translate';
-        
+
         let deltaDelta = new Point(delta.x, delta.y);
         if (this._constrainAxis) {
             deltaDelta = new Point(
@@ -47,30 +49,46 @@ class Transformer extends PixiTransformer {
 
 class TransformerManager {
 
-    _currentTransformer: Transformer | null = null;
+    static _instance: TransformerManager | null = null;
 
-    constructor(private _application: IPolloCanvas) {
+    static getInstance() {
+        if (!this._instance) {
+            this._instance = new TransformerManager();
+        }
+        return this._instance;
+    }
+
+    _currentTransformer: Transformer | null = null;
+    _application: IPolloCanvas | null = null;
+
+
+    setApplication(application: IPolloCanvas) {
+        this._application = application;
+    }
+
+    init() {
+        const app = this._application?.getPixiInstances();
+        this._currentTransformer = new Transformer({
+            rotateEnabled: false,
+            lockAspectRatio: true,
+            boxRotationEnabled: true,
+            boxScalingEnabled: true,
+
+            stage: app?.stage,
+            wireframeStyle: {
+                thickness: 1,
+                color: 0xff0000,
+            },
+        })
+        // 让事件可以穿透到下面的对象
+        this._currentTransformer.hitArea = null;
+        this._currentTransformer.interactive = true;
+        app?.stage.addChild(this._currentTransformer);
+
         SelectObjectManage.getInstance().onSelectObject((objs) => {
             if (this._currentTransformer) {
-                this._currentTransformer.destroy();
+                this._currentTransformer.group = Array.from(objs);
             }
-
-            const app = this._application.getPixiInstances();
-            this._currentTransformer = new Transformer({
-                rotateEnabled: false,
-                lockAspectRatio: true,
-                boxRotationEnabled: true,
-                boxScalingEnabled: true,
-                group: Array.from(objs),
-                stage: app.stage,
-                wireframeStyle: {
-                    thickness: 1,
-                    color: 0xff0000,
-                },
-            })
-
-
-            app.stage.addChild(this._currentTransformer);
         })
 
         KeyboardManager.getInstance().addObserver((keys) => {
@@ -91,8 +109,37 @@ class TransformerManager {
             }
         })
 
+        this._currentTransformer.on('pointerdown', (event) => {
+            event.stopPropagation();
+            if (SelectObjectManage.getInstance().getSelectedObjects().size === 1) {
+                const obj = SelectObjectManage.getInstance().getSelectedObjects().values().next().value;
+                if (obj instanceof PIXI.Text) {
+                    obj.emit('pointerdown', event);
+                }
+            }
+        });
     }
 
+    // 显示隐藏
+    show() {
+        if (!this._currentTransformer) {
+            return;
+        }
+        this._currentTransformer.visible = true;
+        this._currentTransformer.children.forEach((child) => {
+            child.visible = true;
+        });
+    }
+
+    hide() {
+        if (!this._currentTransformer) {
+            return;
+        }
+        this._currentTransformer.visible = false;
+        this._currentTransformer.children.forEach((child) => {
+            child.visible = false;
+        });
+    }
 
 }
 
