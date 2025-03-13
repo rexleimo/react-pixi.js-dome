@@ -7,6 +7,7 @@ import SelectObjectManage from "@/packages/pixi-canvas/manages/SelectObjectManag
 import TransformerManager from "@/packages/pixi-canvas/manages/TransformerManager";
 import {IEntity} from "@/packages/pixi-canvas/types/IEntity";
 import KeyboardManager from "@/packages/pixi-canvas/manages/KeyboardManager";
+import PaintingModeManager, { PaintingMode } from './manages/PaintingModeManager';
 
 
 class PolloCanvas implements IPolloCanvas {
@@ -31,6 +32,7 @@ class PolloCanvas implements IPolloCanvas {
             SelectObjectManage.getInstance().setApplication(this);
             new TransformerManager(this);
             KeyboardManager.getInstance();
+            PaintingModeManager.getInstance().setMode(PaintingMode.DRAW);
         })
     }
 
@@ -60,6 +62,10 @@ class PolloCanvas implements IPolloCanvas {
 
     addChildren(entity: IEntity) {
         this.getCamera().addChildren(entity.getEntity())
+    }
+    
+    setPaintingMode(mode: PaintingMode) {
+        PaintingModeManager.getInstance().setMode(mode);
     }
 
 }
