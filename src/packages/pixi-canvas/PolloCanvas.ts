@@ -60,7 +60,7 @@ class PolloCanvas implements IPolloCanvas {
     }
 
     addChildren(entity: IEntity) {
-        this._app.stage.addChild(entity.getEntity())
+        this.getCamera().addChildren(entity.getEntity())
     }
 
 }

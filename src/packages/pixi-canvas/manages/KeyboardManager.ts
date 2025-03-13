@@ -1,3 +1,11 @@
+// 安装 key 的 string 映射枚举
+export enum KeyMap {
+    SPACE = ' ',
+    CONTROL = 'CONTROL',
+    META = 'META',
+    SHIFT = 'SHIFT',
+}
+
 class KeyboardManager {
 
     static instance: KeyboardManager;

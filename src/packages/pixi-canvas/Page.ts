@@ -47,7 +47,7 @@ class Page implements IPage {
         container.x = (rendererWidth - this._width) / 2;
         container.y = (rendererHeight - this._height) / 2;
 
-        this._app.getCamera().addChild(container);
+        this._app.getCamera().addChildren(container);
     }
 
     setId(id: string) {
@@ -64,11 +64,9 @@ class Page implements IPage {
 
 
     addImage(url: string) {
-
         const image = new ImageEntity(this._app)
         image.setImage(url);
-        this._app.addChildren(image);
-
+        this._instances.addChild(image.getEntity());
     }
 
 }
