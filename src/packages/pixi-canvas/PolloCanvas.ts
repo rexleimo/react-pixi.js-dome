@@ -5,7 +5,6 @@ import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
 import {IGridSystem} from "@/packages/pixi-canvas/types/IGridSystem";
 import SelectObjectManage from "@/packages/pixi-canvas/manages/SelectObjectManage";
 import TransformerManager from "@/packages/pixi-canvas/manages/TransformerManager";
-import {PixiRenderEnable} from "@/packages/pixi-canvas/types/PixiRenderable";
 import {IEntity} from "@/packages/pixi-canvas/types/IEntity";
 import KeyboardManager from "@/packages/pixi-canvas/manages/KeyboardManager";
 

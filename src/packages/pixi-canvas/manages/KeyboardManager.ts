@@ -9,7 +9,9 @@ export enum KeyMap {
 class KeyboardManager {
 
     static instance: KeyboardManager;
-    private keys = new Set<string>()
+    private keys = new Set<string>();
+
+    private observers: ((keys: Set<string>) => void)[] = [];
 
     static getInstance() {
         if (!KeyboardManager.instance) {
@@ -26,10 +28,37 @@ class KeyboardManager {
     onKeyDown = (e: KeyboardEvent) => {
         const key = e.key.toUpperCase();
         this.keys.add(key);
+
+        const keySetSize = this.keys.size;
+        if(keySetSize === 1 && this.keys.has(KeyMap.SPACE)) {
+            document.body.style.cursor = 'grabbing';
+        }
+
+        this.emit();
     }
 
     onKeyUp = (e: KeyboardEvent) => {
-        this.keys.clear();
+        const key = e.key.toUpperCase();
+
+        const keySetSize = this.keys.size;
+        if(keySetSize === 1 && this.keys.has(key)) {
+            document.body.style.cursor = 'default';
+        }
+        
+        this.keys.delete(key);
+        this.emit();
+    }
+
+    addObserver(observer: (keys: Set<string>) => void) {
+        this.observers.push(observer);
+    }
+
+    removeObserver(observer: (keys: Set<string>) => void) {
+        this.observers = this.observers.filter(o => o !== observer);
+    }
+
+    emit() {
+        this.observers.forEach(observer => observer(this.keys));
     }
 
     getKeys() {
