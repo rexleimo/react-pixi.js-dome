@@ -2,6 +2,8 @@ import {PixiRenderEnable} from "@/packages/pixi-canvas/types/PixiRenderable";
 import {createNanoEvents} from 'nanoevents';
 import {IPolloCanvas} from "@/packages/pixi-canvas/types/IPolloCanvas";
 import {debounce} from 'lodash-es';
+import KeyboardManager, { KeyMap } from "./KeyboardManager";
+import * as PIXI from 'pixi.js';
 
 enum SelectObjectManageEvent {
     push = "push",
@@ -30,10 +32,18 @@ class SelectObjectManage {
     }
 
     setSelectObject(obj: PixiRenderEnable | PixiRenderEnable[]) {
-        const addObjects = this.beforeAddObject(obj);
-        addObjects.forEach(item => {
-            this.selectedObjects.add(item);
-        })
+
+        const keyboards = KeyboardManager.getInstance().getKeys();
+        if(keyboards.size === 1 && keyboards.has(KeyMap.SHIFT)) {
+            const addObjects = this.beforeAddObject(obj);
+            addObjects.forEach(item => {
+                this.selectedObjects.add(item);
+            })
+        } else {
+            this.selectedObjects.clear();
+            this.selectedObjects.add(obj as PixiRenderEnable);
+        }
+       
     }
 
     beforeAddObject(obj: PixiRenderEnable | PixiRenderEnable[]) {
@@ -53,10 +63,21 @@ class SelectObjectManage {
     }
 
     emitSelectEvent = debounce(() => {
-        this.selectEvents.emit("draw", this.selectedObjects);
+        this.selectEvents.emit("draw", Array.from(this.selectedObjects));
     }, 50)
 
     emitPushEvent(obj: PixiRenderEnable | PixiRenderEnable[]) {
+        // 如果是文本对象，确保它在最上层
+        if (obj instanceof PIXI.Text) {
+            obj.zIndex = 10;
+            
+            // 确保舞台重新排序
+            if (this._application?.getPixiInstances()?.stage) {
+                this._application.getPixiInstances().stage.sortableChildren = true;
+                this._application.getPixiInstances().stage.sortChildren();
+            }
+        }
+        
         this.selectEvents.emit(SelectObjectManageEvent.push, obj);
     }
 }

@@ -34,6 +34,7 @@ class PolloCanvas implements IPolloCanvas {
             TransformerManager.getInstance().init();
             KeyboardManager.getInstance();
             PaintingModeManager.getInstance().setMode(PaintingMode.DRAW);
+            this._app.stage.sortableChildren = true;
         })
     }
 

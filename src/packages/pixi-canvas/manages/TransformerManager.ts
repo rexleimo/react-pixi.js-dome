@@ -82,10 +82,12 @@ class TransformerManager {
         })
         // 让事件可以穿透到下面的对象
         this._currentTransformer.hitArea = null;
-        this._currentTransformer.interactive = true;
+        this._currentTransformer.interactive = false;
         app?.stage.addChild(this._currentTransformer);
+        this._currentTransformer.zIndex = 0;
 
         SelectObjectManage.getInstance().onSelectObject((objs) => {
+            console.log(objs);
             if (this._currentTransformer) {
                 this._currentTransformer.group = Array.from(objs);
             }
@@ -125,20 +127,16 @@ class TransformerManager {
         if (!this._currentTransformer) {
             return;
         }
+        // 设置透明度
         this._currentTransformer.visible = true;
-        this._currentTransformer.children.forEach((child) => {
-            child.visible = true;
-        });
     }
 
     hide() {
         if (!this._currentTransformer) {
             return;
         }
+        // 设置透明度
         this._currentTransformer.visible = false;
-        this._currentTransformer.children.forEach((child) => {
-            child.visible = false;
-        });
     }
 
 }

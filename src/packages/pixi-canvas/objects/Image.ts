@@ -7,13 +7,16 @@ class ImageEntity implements IEntity {
 
     _instance: PIXI.Sprite;
     _imageOriginal!: HTMLImageElement;
+    _zIndex: number = 11;
 
     constructor(private _application: IPolloCanvas) {
         this._instance = new PIXI.Sprite();
         this._instance.interactive = true;
         this._instance.eventMode = 'static';
+        this._instance.zIndex = this._zIndex;
 
-        this._instance.on('pointerdown', () => {
+        this._instance.on('pointerdown', (event) => {
+            event.stopPropagation();
             SelectObjectManage.getInstance().emitPushEvent(this._instance);
         })
 
