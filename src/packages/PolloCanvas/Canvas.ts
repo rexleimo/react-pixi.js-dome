@@ -1,6 +1,7 @@
 import { Canvas, FabricObject } from 'fabric';
 import { ICanvas } from './types/ICanvas';
 import WorldManage from './manages/WorldManage';
+import KeyboardManage from './manages/KeyboardManage';
 
 class PolloCanvas implements ICanvas {
 
@@ -20,7 +21,7 @@ class PolloCanvas implements ICanvas {
         });
         
         new WorldManage(this);
-
+        KeyboardManage.getInstance().setApplication(this);
         this.canvas.renderAll();
     }
 
