@@ -1,12 +1,25 @@
 import { useEffect, useRef } from "react";
+import PolloCanvas from "@/packages/PolloCanvas/Canvas";
+import PolloImage from "@/packages/PolloCanvas/objects/Image";
+
 export default function Home() {
 
     const containerRef = useRef<HTMLDivElement>(null);
   
 
-    
+    useEffect(() => {
+        async function init() {
+            const canvas = new PolloCanvas(containerRef.current!);
+            canvas.init();
+                
+            const image = new PolloImage();
+            await image.setImage("/1.jpg");
+            canvas.addObject(image.getImage());
+        }
+        init();
+    }, []);
 
     return (
-        <div ref={containerRef}></div>
+        <div ref={containerRef} style={{ width: '100%', height: '100%' }}></div>
     );
 }
