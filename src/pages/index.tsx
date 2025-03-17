@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import PolloCanvas from "@/packages/PolloCanvas/Canvas";
 import PolloImage from "@/packages/PolloCanvas/objects/Image";
+import PolloText from "@/packages/PolloCanvas/objects/text";
 
 export default function Home() {
 
@@ -14,7 +15,11 @@ export default function Home() {
                 
             const image = new PolloImage();
             await image.setImage("/1.jpg");
-            canvas.addObject(image.getImage());
+            canvas.addObject(image.getEntity());
+
+            const text = new PolloText();
+            text.setText("Hello World");
+            canvas.addObject(text.getEntity());
         }
         init();
     }, []);
