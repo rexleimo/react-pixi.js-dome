@@ -1,8 +1,9 @@
-import { Canvas, FabricObject } from "fabric";
+import { Canvas, FabricObject, PencilBrush } from "fabric";
 import { ICanvas } from "./types/ICanvas";
 import WorldManage from "./manages/WorldManage";
 import KeyboardManage from "./manages/KeyboardManage";
 import UndoRedoManage from "./manages/UndoRedoManage";
+import BrushManage from "./manages/BrushManage";
 
 class PolloCanvas implements ICanvas {
   private canvas: Canvas;
@@ -14,6 +15,7 @@ class PolloCanvas implements ICanvas {
     this.canvas = new Canvas(canvasElement, {
       preserveObjectStacking: true,
     });
+  
   }
 
   public init() {
@@ -21,10 +23,10 @@ class PolloCanvas implements ICanvas {
       width: this.container.clientWidth,
       height: this.container.clientHeight,
     });
-
     new WorldManage(this);
     KeyboardManage.getInstance().setApplication(this);
     UndoRedoManage.getInstance();
+    BrushManage.getInstance().setApplication(this);
     this.canvas.renderAll();
   }
 

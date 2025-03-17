@@ -1,7 +1,8 @@
 import { ICanvas } from "../types/ICanvas";
-import { Canvas, TPointerEventInfo, TPointerEvent, FabricObject } from "fabric";
+import { Canvas, TPointerEventInfo, TPointerEvent } from "fabric";
 import KeyboardManage from "./KeyboardManage";
 import { EKeyboard } from "../enums/EKeyboard";
+import DrawManage from "./DrawManage";
 class WorldManage {
   private canvas: Canvas;
   private isDragging = false;
@@ -14,38 +15,21 @@ class WorldManage {
   private minZoom = 0.2;
 
   private keyboardManage: KeyboardManage;
+  private drawManage: DrawManage;
 
   private _isSPACEKeyDown = false;
 
   constructor(private application: ICanvas) {
     this.canvas = application.getCanvas();
     this.keyboardManage = KeyboardManage.getInstance();
+    this.drawManage = DrawManage.getInstance();
     this.init();
-
-    this.keyboardManage.on(
-      EKeyboard.SPACE,
-      { keydown: true, keyup: true },
-      (event: KeyboardEvent) => {
-        if(this.isDragging) {
-            return;
-        }
-
-        if (event.type === "keydown") {
-          const lowerCanvasEl = this.canvas.upperCanvasEl;
-          lowerCanvasEl.style.cursor = "grab";
-          this._isSPACEKeyDown = true;
-        } else {
-          const lowerCanvasEl = this.canvas.upperCanvasEl;
-          lowerCanvasEl.style.cursor = "default";
-          this._isSPACEKeyDown = false;
-        }
-      }
-    );
+    this.initkeyBoardEvent();
   }
 
   public init() {
     this.canvas.on("mouse:down", (opt: TPointerEventInfo<TPointerEvent>) => {
-      console.log(this._isSPACEKeyDown);
+      
       if (!this._isSPACEKeyDown) {
         return;
       }
@@ -153,34 +137,36 @@ class WorldManage {
       this.canvas.requestRenderAll();
     });
 
-    document.addEventListener("keydown", (evt: KeyboardEvent) => {
-      if (evt.key === EKeyboard.SPACE && !this.isDragging) {
-        this.canvas.selection = false;
-        const lowerCanvasEl = this.canvas.upperCanvasEl;
-        lowerCanvasEl.style.cursor = "grab";
-
-        // Store and disable object interactivity
-        this.canvas.getObjects().forEach((obj) => {
-          obj.selectable = false;
-          obj.hoverCursor = "grab";
-        });
-      }
+    this.canvas.on("path:created", (opt) => {
+      console.log(opt);
     });
 
-    document.addEventListener("keyup", (evt: KeyboardEvent) => {
-      if (evt.key === EKeyboard.SPACE && !this.isDragging) {
-        this.canvas.selection = true;
-        const lowerCanvasEl = this.canvas.upperCanvasEl;
-        lowerCanvasEl.style.cursor = "default";
+    
 
-        // Restore object interactivity
-        this.canvas.getObjects().forEach((obj) => {
-          obj.selectable = true;
-          obj.hoverCursor = null;
-        });
-        this.isDragging = false;
+    
+  }
+
+  public initkeyBoardEvent() {
+    this.keyboardManage.on(
+      EKeyboard.SPACE,
+      { keydown: true, keyup: true },
+      (event: KeyboardEvent) => {
+
+        if (this.isDragging && !this.drawManage.isSelectMode()) {
+          return;
+        }
+
+        if (event.type === "keydown") {
+          const lowerCanvasEl = this.canvas.upperCanvasEl;
+          lowerCanvasEl.style.cursor = "grab";
+          this._isSPACEKeyDown = true;
+        } else {
+          const lowerCanvasEl = this.canvas.upperCanvasEl;
+          lowerCanvasEl.style.cursor = "default";
+          this._isSPACEKeyDown = false;
+        }
       }
-    });
+    );
   }
 }
 
