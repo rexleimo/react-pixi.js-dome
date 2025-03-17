@@ -1,6 +1,7 @@
 export enum EDrawMode {
   SELECT = "select",
   DRAW = "draw",
+  ERASER = "eraser",
 }
 
 

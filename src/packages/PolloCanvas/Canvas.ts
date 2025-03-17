@@ -6,19 +6,19 @@ import UndoRedoManage from "./manages/UndoRedoManage";
 import BrushManage from "./manages/BrushManage";
 
 class PolloCanvas implements ICanvas {
-  private canvas: Canvas;
+  private canvas!: Canvas;
 
   constructor(private container: HTMLDivElement) {
     this.container = container;
+  }
+
+  public init() {
     const canvasElement = document.createElement("canvas");
     this.container.appendChild(canvasElement);
     this.canvas = new Canvas(canvasElement, {
       preserveObjectStacking: true,
     });
-  
-  }
 
-  public init() {
     this.canvas.setDimensions({
       width: this.container.clientWidth,
       height: this.container.clientHeight,
