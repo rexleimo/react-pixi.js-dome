@@ -2,6 +2,7 @@ import { Canvas, FabricObject } from "fabric";
 import { ICanvas } from "./types/ICanvas";
 import WorldManage from "./manages/WorldManage";
 import KeyboardManage from "./manages/KeyboardManage";
+import UndoRedoManage from "./manages/UndoRedoManage";
 
 class PolloCanvas implements ICanvas {
   private canvas: Canvas;
@@ -23,6 +24,7 @@ class PolloCanvas implements ICanvas {
 
     new WorldManage(this);
     KeyboardManage.getInstance().setApplication(this);
+    UndoRedoManage.getInstance();
     this.canvas.renderAll();
   }
 
@@ -30,8 +32,34 @@ class PolloCanvas implements ICanvas {
     return this.canvas;
   }
 
-  public addObject(object: FabricObject) {
+  public addObject(object: FabricObject, isUndo: boolean = true) {
     this.canvas.add(object);
+
+    if (isUndo) {
+      UndoRedoManage.getInstance().save({
+        undo: () => {
+          this.removeObject(object, false);
+        },
+        redo: () => {
+          this.addObject(object, false);
+        },
+      });
+    }
+  }
+
+  public removeObject(object: FabricObject, isUndo: boolean = true) {
+    this.canvas.remove(object);
+
+    if (isUndo) {
+      UndoRedoManage.getInstance().save({
+        undo: () => {
+          this.removeObject(object, false);
+        },
+        redo: () => {
+          this.addObject(object, false);
+        },
+      });
+    }
   }
 }
 

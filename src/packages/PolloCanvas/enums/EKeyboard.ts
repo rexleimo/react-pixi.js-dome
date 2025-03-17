@@ -1,7 +1,13 @@
 export enum EKeyboard {
-    SPACE = ' ',
+    SPACE = 'space',
     SHIFT = 'shift',
-    CONTROL = 'control',
+    CONTROL = 'ctrl',
     ALT = 'alt',
-    META = 'meta',
+    META = 'command',
+    Z = 'z',
+}
+
+export enum EKeyboardEvent {
+    KEYDOWN = 'keydown',
+    KEYUP = 'keyup',
 }

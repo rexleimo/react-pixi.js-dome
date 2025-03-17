@@ -18,7 +18,7 @@ export default function Home() {
             canvas.addObject(image.getEntity());
 
             const text = new PolloText();
-            text.setText("Hello World");
+            text.setText("HelloWorld 11123");
             canvas.addObject(text.getEntity());
         }
         init();

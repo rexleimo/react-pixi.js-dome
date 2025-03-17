@@ -1,5 +1,5 @@
 import cuid from "cuid";
-import { FabricObject, Textbox } from "fabric";
+import { FabricObject } from "fabric";
 
 abstract class AbstractObject {
   protected uuid: string;
@@ -7,6 +7,7 @@ abstract class AbstractObject {
 
   constructor() {
     this.uuid = cuid();
+
   }
 
   public initEntity() {
@@ -14,14 +15,14 @@ abstract class AbstractObject {
 
     this.entity.on("mouseover", () => {
       this.entity.hoverCursor = "default";
-      // 显示边框
+
       if (this.entity.canvas?.getActiveObject() === this.entity) {
         return;
       }
-
+    
       this.entity.set({
         stroke: '#00a8ff',
-        strokeWidth: 1,
+        strokeWidth: 5,
         strokeUniform: true,
       });
       this.entity.canvas?.requestRenderAll();
@@ -38,14 +39,21 @@ abstract class AbstractObject {
       this.entity.canvas?.requestRenderAll();
     });
 
-    // 设置控制点样式
+    // 设置控制点样式和边框大小
+    // 设置选中时的控制点和边框样式
+    // 问题：边框宽度(strokeWidth)会影响对象的实际尺寸计算
+    // 解决方案：
+    // 1. 使用strokeUniform=true确保边框宽度不随缩放变化
+    // 2. 在选中状态下使用borderDashArray创建虚线边框，减少视觉干扰
+    // 3. 可以考虑在mouseout时将strokeWidth设为0而不是undefined
+    // 4. 对于精确定位，可以在获取对象尺寸时手动减去边框宽度的影响
     this.entity.set({
       transparentCorners: false,
       cornerColor: '#00a8ff',
       cornerStrokeColor: '#00a8ff',
-      cornerSize: 10,
       borderColor: '#00a8ff',
-      borderScaleFactor: 2,
+      borderScaleFactor: 2, // 设置边框大小/粗细
+      cornerSize: 10, // 设置控制点大小
     });
 
     // 隐藏中间的控制点，只保留四个角的控制点

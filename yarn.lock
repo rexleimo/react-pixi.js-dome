@@ -2524,6 +2524,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hotkeys-js@npm:^3.13.9":
+  version: 3.13.9
+  resolution: "hotkeys-js@npm:3.13.9"
+  checksum: 10c0/83511e7e812395289231605f6c50974f85c270de0316b21ffc4b794d29f2a1aa927a29644c77f1f77ac6e3228fa91fb4bc5f01fb5b27e00196af4d8c5a4a6693
+  languageName: node
+  linkType: hard
+
 "html-encoding-sniffer@npm:^3.0.0":
   version: 3.0.0
   resolution: "html-encoding-sniffer@npm:3.0.0"
@@ -3890,6 +3897,7 @@ __metadata:
     eslint: "npm:^9"
     eslint-config-next: "npm:15.2.1"
     fabric: "npm:^6.6.1"
+    hotkeys-js: "npm:^3.13.9"
     lodash-es: "npm:^4.17.21"
     nanoevents: "npm:^9.1.0"
     next: "npm:15.2.1"
