@@ -272,8 +272,8 @@ class PolloDiffusion extends AbstractObject {
           newWidth = this.lastRect.width * scaleChange;
           newHeight = this.lastRect.height * scaleChange;
 
-           // 计算右上角坐标
-    const rightTop = {
+          // 计算右上角坐标
+          const rightTop = {
             x: this.lastRect.left + this.lastRect.width,
             y: this.lastRect.top,
           };
