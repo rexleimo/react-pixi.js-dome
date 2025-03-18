@@ -65,6 +65,10 @@ class PolloCanvas implements ICanvas {
       });
     }
   }
+
+  toJSON() {
+    return this.canvas.toJSON();
+  }
 }
 
 export default PolloCanvas;
