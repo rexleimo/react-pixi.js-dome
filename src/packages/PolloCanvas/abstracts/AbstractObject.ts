@@ -19,23 +19,11 @@ abstract class AbstractObject {
       if (this.entity.canvas?.getActiveObject() === this.entity) {
         return;
       }
-    
-      this.entity.set({
-        stroke: '#00a8ff',
-        strokeWidth: 5,
-        strokeUniform: true,
-      });
       this.entity.canvas?.requestRenderAll();
-      
     });
 
     this.entity.on("mouseout", () => {
       this.entity.hoverCursor = "default";
-      // 移除边框
-      this.entity.set({
-        stroke: undefined,
-        strokeUniform: true,
-      });
       this.entity.canvas?.requestRenderAll();
     });
 

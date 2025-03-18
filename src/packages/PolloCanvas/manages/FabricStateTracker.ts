@@ -34,6 +34,7 @@ class FabricStateTracker {
     this.application.getCanvas().on("selection:created", (options) => {
       console.log("selection:created");
       const selectedObject = options.selected[0];
+      console.log(selectedObject);
       this.lastState = {
         left: selectedObject.left,
         top: selectedObject.top,

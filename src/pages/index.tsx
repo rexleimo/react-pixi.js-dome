@@ -11,6 +11,9 @@ import {
   EDrawMode,
   Serialization,
 } from "@/packages/PolloCanvas";
+import PolloDiffusion, {
+  DiffusionGroup,
+} from "@/packages/PolloCanvas/objects/diffusion";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,6 +25,12 @@ export default function Home() {
       setCanvas(canvas);
 
       canvas.init();
+
+      const diffusion = new PolloDiffusion(480, 480);
+      await diffusion.setImage("/2.png");
+      const entity = diffusion.getEntity() as DiffusionGroup;
+      entity.aiInfo = "123";
+      canvas.addObject(entity);
 
       // const image = new PolloImage();
       // await image.setImage("/1.jpg");
@@ -49,23 +58,36 @@ export default function Home() {
   const handleSerialize = () => {
     const data = Serialization.getInstance().serialize(canvas!);
     console.log(data);
-  }
+  };
 
   const handleDeserialize = () => {
-     Serialization.getInstance().deserialize(canvas!, TestData);
-  }
+    Serialization.getInstance().deserialize(canvas!, TestData);
+  };
 
   return (
     <CanvasProvider canvas={canvas}>
       <div>
         <div>
-          <button onClick={handleDrawMode} style={{marginRight: 10}}>画画模式</button>
-          <button onClick={handleSelectMode} style={{marginRight: 10}}>选择模式</button>
-          <button onClick={handleEraserMode} style={{marginRight: 10}}>橡皮擦模式</button>
-          <button onClick={handleSerialize} style={{marginRight: 10}}>序列化</button>
-          <button onClick={handleDeserialize} style={{marginRight: 10}}>反序列化</button>
+          <button onClick={handleDrawMode} style={{ marginRight: 10 }}>
+            画画模式
+          </button>
+          <button onClick={handleSelectMode} style={{ marginRight: 10 }}>
+            选择模式
+          </button>
+          <button onClick={handleEraserMode} style={{ marginRight: 10 }}>
+            橡皮擦模式
+          </button>
+          <button onClick={handleSerialize} style={{ marginRight: 10 }}>
+            序列化
+          </button>
+          <button onClick={handleDeserialize} style={{ marginRight: 10 }}>
+            反序列化
+          </button>
         </div>
-        <div ref={containerRef} style={{ width: '100%', height: 800 }}></div>
+        <div
+          ref={containerRef}
+          style={{ width: "100%", height: "1080px" }}
+        ></div>
       </div>
     </CanvasProvider>
   );
