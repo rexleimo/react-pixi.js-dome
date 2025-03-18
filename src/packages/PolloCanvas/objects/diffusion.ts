@@ -11,6 +11,7 @@ import {
 import AbstractObject from "../abstracts/AbstractObject";
 import PolloImage from "./Image";
 import Border from "./border";
+import Controls from "./controls";
 
 export class DiffusionGroup extends Group {
   static type: string = "DiffusionGroup";
@@ -43,7 +44,8 @@ class PolloDiffusion extends AbstractObject {
 
   width: number = 768;
   height: number = 1024;
-
+  controls: Controls;
+  isSelected: boolean = false;
   groups: FabricObject[] = [];
 
   private createButton(text: string, left: number, top: number) {
@@ -107,6 +109,7 @@ class PolloDiffusion extends AbstractObject {
 
     this.initButtons();
     this.border = new Border(this.width, this.height);
+    this.controls = new Controls(this.width, this.height);
     this.groups.push(this.border.getEntity());
 
     this.entity.on("mouseover", () => {
@@ -118,12 +121,31 @@ class PolloDiffusion extends AbstractObject {
     });
 
     this.entity.on("mouseout", () => {
-        console.log('mouseout');
-        this.border.getEntity().visible = false;
+        if(!this.isSelected) {
+            this.border.getEntity().visible = false;
+            this.entity.dirty = true;
+            this.entity.canvas?.requestRenderAll();
+        }
+    });
+
+    this.entity.on("selected", () => {
+        this.isSelected = true;
+        this.controls.getControls().forEach((control) => {
+            control.visible = true;
+        });
         this.entity.dirty = true;
         this.entity.canvas?.requestRenderAll();
     });
 
+    this.entity.on("deselected", () => {
+        this.isSelected = false;
+        this.border.getEntity().visible = false;
+        this.controls.getControls().forEach((control) => {
+            control.visible = false;
+        });
+        this.entity.dirty = true;
+        this.entity.canvas?.requestRenderAll();
+    });
   }
 
   public async setImage(src: string) {
@@ -136,7 +158,7 @@ class PolloDiffusion extends AbstractObject {
   public getEntity() {
     this.entity.add(...this.groups);
     this.entity.add(...this.buttons);
-
+    this.entity.add(...this.controls.getControls());
     this.entity.moveObjectTo(this.groups[1], 0);
 
     return this.entity;
