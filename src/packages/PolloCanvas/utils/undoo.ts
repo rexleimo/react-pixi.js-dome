@@ -20,6 +20,8 @@ export type UndooItem = {
   redo: () => void;
   /** 可选的操作描述 */
   description?: string;
+  /** 是否保存 */
+  isSave?: boolean;
 };
 
 /**

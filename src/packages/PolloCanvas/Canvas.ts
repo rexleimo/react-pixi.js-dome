@@ -4,6 +4,7 @@ import WorldManage from "./manages/WorldManage";
 import KeyboardManage from "./manages/KeyboardManage";
 import UndoRedoManage from "./manages/UndoRedoManage";
 import BrushManage from "./manages/BrushManage";
+import FabricStateTracker from "./manages/FabricStateTracker";
 
 class PolloCanvas implements ICanvas {
   private canvas!: Canvas;
@@ -27,6 +28,7 @@ class PolloCanvas implements ICanvas {
     KeyboardManage.getInstance().setApplication(this);
     UndoRedoManage.getInstance();
     BrushManage.getInstance().setApplication(this);
+    FabricStateTracker.getInstance().setApplication(this).init();
     this.canvas.renderAll();
   }
 
