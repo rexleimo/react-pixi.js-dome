@@ -1,7 +1,10 @@
 import DrawManage from "./DrawManage";
 import { ICanvas } from "../types/ICanvas";
 import { EDrawMode } from "../enums/EDrawMode";
-import { PencilBrush } from "fabric";
+import { PencilBrush, StaticCanvas } from "fabric";
+import * as fabric from "fabric";
+import PolloImage from "../objects/Image";
+
 class BrushManage {
   static _instance: BrushManage;
 
@@ -31,6 +34,7 @@ class BrushManage {
         }
       } else {
         this.application.getCanvas().isDrawingMode = false;
+        this.mergeFreeDrawingObjects();
       }
     });
   }
@@ -40,12 +44,67 @@ class BrushManage {
 
     this.pencilBrush = new PencilBrush(this.application.getCanvas());
     this.pencilBrush.color = "black";
-    this.pencilBrush.width = 10; 
+    this.pencilBrush.width = 10;
 
     this.eraserBrush = new PencilBrush(this.application.getCanvas());
     this.eraserBrush.color = "white";
     this.eraserBrush.width = 10;
+  }
+
+  async mergeFreeDrawingObjects() {
+    const objects = this.application.getCanvas().getObjects();
+    const pathObjects = objects.filter((object) => object.type === "path");
+    if (pathObjects.length === 0) return;
+
+    // 计算所有路径对象的边界
+    const minX = Math.min(...pathObjects.map((obj) => obj.left));
+    const minY = Math.min(...pathObjects.map((obj) => obj.top));
+    const maxX = Math.max(
+      ...pathObjects.map((obj) => obj.left + obj.width * obj.scaleX)
+    );
+    const maxY = Math.max(
+      ...pathObjects.map((obj) => obj.top + obj.height * obj.scaleY)
+    );
+
+    const width = maxX - minX;
+    const height = maxY - minY;
+
+    // 创建临时画布
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = width;
+    tempCanvas.height = height;
+
+    const tempCtx = tempCanvas.getContext("2d");
+    if (!tempCtx) return;
+
+    // 创建临时 fabric 画布以正确渲染对象
+    const tempFabricCanvas = new StaticCanvas();
+    tempFabricCanvas.setDimensions({
+      width: width,
+      height: height,
+    });
+
+    // 复制路径对象到临时画布，并调整位置
+    pathObjects.forEach(async (obj) => {
+      obj.top = obj.top - minY;
+      obj.left = obj.left - minX;
+      tempFabricCanvas.add(obj);
+    });
+
+    tempFabricCanvas.renderAll();
+    //获取临时画布的数据 URL
+    const dataUrl = tempFabricCanvas.toDataURL();
     
+    //创建新的图像对象
+    const image = new PolloImage();
+    await image.setImage(dataUrl);
+
+    const entity = image.getEntity();
+    entity.left = minX;
+    entity.top = minY;
+
+    this.application.getCanvas().add(entity);
+    this.application.getCanvas().renderAll();
   }
 }
 
