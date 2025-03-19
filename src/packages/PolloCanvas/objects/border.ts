@@ -10,7 +10,7 @@ class Border extends AbstractObject {
       width: width,
       height: height,
       stroke: "#00a8ff",
-      strokeWidth: 5,
+      strokeWidth: 2,
       strokeUniform: true,
       selectable: false,
       hasControls: false,

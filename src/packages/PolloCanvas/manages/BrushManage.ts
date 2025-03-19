@@ -2,7 +2,6 @@ import DrawManage from "./DrawManage";
 import { ICanvas } from "../types/ICanvas";
 import { EDrawMode } from "../enums/EDrawMode";
 import { PencilBrush, StaticCanvas } from "fabric";
-import * as fabric from "fabric";
 import PolloImage from "../objects/Image";
 
 class BrushManage {
@@ -21,6 +20,9 @@ class BrushManage {
   private pencilBrush!: PencilBrush;
   private eraserBrush!: PencilBrush;
 
+  private width: number = 10;
+  private color: string = "black";
+
   constructor() {
     this.drawManage = DrawManage.getInstance();
     this.drawManage.onDrawModeChange((mode) => {
@@ -37,18 +39,20 @@ class BrushManage {
         this.mergeFreeDrawingObjects();
       }
     });
+    
   }
 
   setApplication(application: ICanvas) {
     this.application = application;
 
     this.pencilBrush = new PencilBrush(this.application.getCanvas());
-    this.pencilBrush.color = "black";
-    this.pencilBrush.width = 10;
+    this.pencilBrush.color = this.color;
+    this.pencilBrush.width = this.width;
 
     this.eraserBrush = new PencilBrush(this.application.getCanvas());
     this.eraserBrush.color = "white";
-    this.eraserBrush.width = 10;
+    this.eraserBrush.width = this.width;
+   
   }
 
   async mergeFreeDrawingObjects() {
