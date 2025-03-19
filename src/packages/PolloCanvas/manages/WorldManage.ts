@@ -140,9 +140,6 @@ class WorldManage {
     this.canvas.on("path:created", (opt) => {
       console.log(opt);
     });
-
-    
-
     
   }
 

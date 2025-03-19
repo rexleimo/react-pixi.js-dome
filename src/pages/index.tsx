@@ -14,6 +14,14 @@ import {
 import PolloDiffusion, {
   DiffusionGroup,
 } from "@/packages/PolloCanvas/objects/diffusion";
+import dynamic from "next/dynamic";
+
+const BrushStage = dynamic(
+  () => import("@/packages/PolloCanvas/brushs/react/BrushStage"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -88,6 +96,7 @@ export default function Home() {
           ref={containerRef}
           style={{ width: "100%", height: "1080px" }}
         ></div>
+        <BrushStage />
       </div>
     </CanvasProvider>
   );

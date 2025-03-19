@@ -11,10 +11,13 @@
   "dependencies": {
     "cuid": "^3.0.0",
     "fabric": "^6.6.1",
+    "konva": "^9.3.19",
+    "konva-react": "^0.1.0",
     "lodash-es": "^4.17.21",
     "next": "15.2.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-konva": "^19.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

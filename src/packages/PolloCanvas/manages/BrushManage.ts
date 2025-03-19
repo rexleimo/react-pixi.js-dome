@@ -110,6 +110,11 @@ class BrushManage {
     this.application.getCanvas().add(entity);
     this.application.getCanvas().renderAll();
   }
+
+  getDrawManage() {
+    return this.drawManage;
+  }
+
 }
 
 export default BrushManage;
