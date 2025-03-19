@@ -5,6 +5,8 @@ export enum EKeyboard {
     ALT = 'alt',
     META = 'command',
     Z = 'z',
+    DELETE = 'delete',
+    BACKSPACE = 'backspace',
 }
 
 export enum EKeyboardEvent {

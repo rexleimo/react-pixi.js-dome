@@ -44,7 +44,7 @@ class WorldManage {
       this.lastPosY = evt.clientY;
     });
 
-    this.canvas.on("mouse:up", (opt: TPointerEventInfo<TPointerEvent>) => {
+    this.canvas.on("mouse:up", () => {
       this.isDragging = false;
 
       if (this._isSPACEKeyDown) {

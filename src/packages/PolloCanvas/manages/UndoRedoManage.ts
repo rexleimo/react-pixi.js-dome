@@ -1,4 +1,4 @@
-import { EKeyboard, EKeyboardEvent } from "../enums/EKeyboard";
+import { EKeyboard } from "../enums/EKeyboard";
 import Undoo, { UndooItem } from "../utils/undoo";
 import KeyboardManage from "./KeyboardManage";
 
