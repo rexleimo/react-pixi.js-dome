@@ -36,7 +36,7 @@ abstract class AbstractObject {
     // 3. 可以考虑在mouseout时将strokeWidth设为0而不是undefined
     // 4. 对于精确定位，可以在获取对象尺寸时手动减去边框宽度的影响
     this.entity.set({
-      transparentCorners: false,
+      transparentCorners: true,
       cornerColor: '#00a8ff',
       cornerStrokeColor: '#00a8ff',
       borderColor: '#00a8ff',

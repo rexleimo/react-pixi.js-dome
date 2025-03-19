@@ -34,7 +34,6 @@ class FabricStateTracker {
     this.application.getCanvas().on("selection:created", (options) => {
       console.log("selection:created");
       const selectedObject = options.selected[0];
-      console.log(selectedObject);
       this.lastState = {
         left: selectedObject.left,
         top: selectedObject.top,
@@ -44,6 +43,19 @@ class FabricStateTracker {
         scaleY: selectedObject.scaleY,
         angle: selectedObject.angle,
       };
+    });
+
+    this.application.getCanvas().on("object:scaling", (options) => {
+      const scalingObject = options.target;
+
+      if (scalingObject.flipX) {
+        scalingObject.flipX = false;
+      }
+
+      if (scalingObject.flipY) {
+        scalingObject.flipY = false;
+      }
+
     });
 
     this.application.getCanvas().on("object:modified", (options) => {
