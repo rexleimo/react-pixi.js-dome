@@ -1,7 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import PolloCanvas from "@/packages/PolloCanvas/Canvas";
-import PolloImage from "@/packages/PolloCanvas/objects/Image";
-import PolloText from "@/packages/PolloCanvas/objects/text";
 import TestData from "@/packages/PolloCanvas/data/pollo.json";
 
 import {
@@ -11,34 +8,33 @@ import {
   EDrawMode,
   Serialization,
 } from "@/packages/PolloCanvas";
-import PolloDiffusion, {
-  DiffusionGroup,
-} from "@/packages/PolloCanvas/objects/diffusion";
+
 import dynamic from "next/dynamic";
 
-const BrushStage = dynamic(
-  () => import("@/packages/PolloCanvas/brushs/react/BrushStage"),
+const CanvasStage = dynamic(
+  () => import("@/packages/PolloCanvas/react/CanvasStage"),
   {
     ssr: false,
   }
 );
 
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [canvas, setCanvas] = useState<ICanvas>();
+  const [canvas] = useState<ICanvas>();
 
   useEffect(() => {
     async function init() {
-      const canvas = new PolloCanvas(containerRef.current!);
-      setCanvas(canvas);
+      // const canvas = new PolloCanvas(containerRef.current!);
+      // setCanvas(canvas);
 
-      canvas.init();
+      // canvas.init();
 
-      const diffusion = new PolloDiffusion(480, 480);
-      await diffusion.setImage("/2.png");
-      const entity = diffusion.getEntity() as DiffusionGroup;
-      entity.aiInfo = "123";
-      canvas.addObject(entity);
+      // const diffusion = new PolloDiffusion(480, 480);
+      // await diffusion.setImage("/2.png");
+      // const entity = diffusion.getEntity() as DiffusionGroup;
+      // entity.aiInfo = "123";
+      // canvas.addObject(entity);
 
       // const image = new PolloImage();
       // await image.setImage("/1.jpg");
@@ -92,11 +88,9 @@ export default function Home() {
             反序列化
           </button>
         </div>
-        <div
-          ref={containerRef}
-          style={{ width: "100%", height: "1080px" }}
-        ></div>
-        <BrushStage />
+        <div className="relative" ref={containerRef} style={{ width: "100%", height: "1080px" }}>
+          <CanvasStage />
+        </div>
       </div>
     </CanvasProvider>
   );

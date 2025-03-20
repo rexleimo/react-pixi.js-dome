@@ -1,1 +1,1 @@
-export { default as BrushStage } from "./BrushStage";
+export { default as BrushCanvas } from "./BrushCanvas";

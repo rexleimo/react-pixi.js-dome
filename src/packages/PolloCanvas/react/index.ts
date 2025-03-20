@@ -1,2 +1,2 @@
-export { CanvasProvider } from "./CanvaPrvie";
-export { useCanvas } from "./CanvaPrvie";
+export { CanvasProvider } from "./CanvasProvider";
+export { useCanvas } from "./CanvasProvider";
