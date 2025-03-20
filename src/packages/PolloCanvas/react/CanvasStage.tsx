@@ -25,7 +25,7 @@ function CanvasStage() {
   const [position, setPosition] = useState<Konva.Vector2d>({ x: 0, y: 0 });
   const [, setCanDrag, canDragRef] = useStateRef<boolean>(false);
   const [isSpaceKeyDown, setIsSpaceKeyDown, isSpaceKeyDownRef] = useStateRef<boolean>(false);
-
+  const [selectedObj, setSelectedObj] = useStateRef<Konva.Node[]>([]);
 
   const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     const stage = e.target as Konva.Stage;
@@ -35,6 +35,13 @@ function CanvasStage() {
     if (isSpaceKeyDownRef  && isSpaceKeyDownRef.current) {
       document.body.style.cursor = "grabbing";
       setCanDrag(true);
+    } 
+
+    const obj = stageRef.current?.getIntersection(pos)
+    if(obj !== null) {
+      setSelectedObj([obj as Konva.Node]);
+    } else {
+      setSelectedObj([]);
     }
   };
 
@@ -78,14 +85,14 @@ function CanvasStage() {
 
       // 计算新的位置,以鼠标位置为中心进行缩放
       const newPos = {
-        x: pointer.x - (pointer.x - position.x) * (limitedScale / oldScale),
-        y: pointer.y - (pointer.y - position.y) * (limitedScale / oldScale),
+        x: pointer.x - (pointer.x - mousePosition.x) * (limitedScale / oldScale),
+        y: pointer.y - (pointer.y - mousePosition.y) * (limitedScale / oldScale),
       };
 
       setScale(limitedScale);
       setPosition(newPos);
     },
-    [position.x, position.y, scale]
+      [mousePosition.x, mousePosition.y, scale]
   );
 
   useEffect(() => {
@@ -137,6 +144,7 @@ function CanvasStage() {
           y={position.y}
           scaleX={scale}
           scaleY={scale}
+          selectedObj={selectedObj}
         />
         <BrushCanvas
           drawMode={drawMode}
