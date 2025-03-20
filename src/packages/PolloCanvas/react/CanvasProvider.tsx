@@ -1,13 +1,13 @@
 import { createContext, useContext } from "react";
-import { ICanvas } from "../types/ICanvas";
+import Konva from "konva";
 
 type CanvasContextProps = {
-  canvas?: ICanvas;
+  canvas?: Konva.Stage;
 };
 
 type CanvasProviderProps = {
   children: React.ReactNode;
-  canvas?: ICanvas;
+  canvas?: Konva.Stage;
 };
 
 const CanvasContext = createContext<CanvasContextProps | null>(null);
